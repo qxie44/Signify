@@ -1,58 +1,78 @@
 .header {
-    padding-left: 50px;
-    padding-top: 20px;
-    text-align: left;
-    font-size: 20px;
-  }
-.UploadPage{
-    background-color: #f5e3d6;
+  padding-left: 50px;
+  padding-top: 20px;
+  text-align: left;
+  font-size: 20px;
+}
+.UploadPage {
+  background-color: #f5e3d6;
 }
 
 .container {
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    cursor: pointer;
-    border-radius: 15px; 
-  }
-  
-  .uploadblock, .previewblock {
-    flex: 1; 
-    margin: 10px; 
-    padding: 20px; 
-    min-width: 300px; /* Minimum width */
-    min-height: 200px; 
-  }
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 15px;
+}
 
-  .small-box {
-    width: 80%; 
-    height: 50px; 
-    margin: 10px auto; 
-    background-color: #f5e3d6;
-    border-radius: 8px; 
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    min-width: 4%; 
-    min-height: 300px; 
-  }
+.uploadblock,
+.previewblock {
+  flex: 1;
+  margin: 10px;
+  padding: 20px;
+  min-width: 300px; /* Minimum width */
+  min-height: 200px;
+}
 
-  button {
-    background-color: #436d8a; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 15px; 
-    font-weight: bold;
-    margin-top: 10px;
-  }
+.small-box {
+  width: 80%;
+  height: 50px;
+  margin: 10px auto;
+  background-color: #f5e3d6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4%;
+  min-height: 300px;
+}
 
-  .previewblock button {
-    margin-left: 10px; 
+button {
+  background-color: #436d8a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 15px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.previewblock button {
+  margin-left: 10px;
 }
 
 button:hover {
-    background-color: #e98973;
+  background-color: #e98973;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

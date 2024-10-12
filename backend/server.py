@@ -4,7 +4,11 @@ import os
 from moviepy.editor import VideoFileClip
 from pydub import AudioSegment
 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -71,7 +75,7 @@ def upload_video():
     print(text)
     return jsonify({
         'message': 'Video uploaded and converted to MP3',
-        'mp3_filename': mp3_filename
+        'text': text
     })
 
 if __name__ == '__main__':
