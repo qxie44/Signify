@@ -1,0 +1,35 @@
+/* src/components/Navbar.css */
+.logo {
+    height: 70px;
+    margin-right: 20px; 
+    width: auto; 
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #436d8a; 
+    padding: 10px 20px; 
+    color: white; 
+    font-weight: bold;
+    position: relative;
+}
+
+
+.nav-links {
+    list-style: none; 
+    display: flex; 
+}
+
+.nav-links li {
+    margin: 0 15px; 
+}
+
+.nav-links a {
+    color: white; 
+    text-decoration: none; 
+}
+
+.nav-links a:hover {
+    color: #e7d4c0
+}

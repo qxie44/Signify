@@ -1,0 +1,16 @@
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.image-gallery img {
+  width: 150px;
+  height: auto;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+

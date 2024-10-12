@@ -1,0 +1,126 @@
+.h2 {
+  font-size: 25px;
+  padding: 20px;
+}
+.App {
+  text-align: center;
+}
+.App-header {
+  background-color: #ffffff; /* Beige background for header */
+  padding: 10px;
+  border-radius: 25px; 
+  font-size: 30px;
+  font-weight: bolder;
+}
+
+.preview-section {
+  display: flex;
+  align-items: flex-start; /* Align items at the top */
+  padding: 20px; /* Optional padding */
+}
+
+.video-preview {
+  flex: 1;
+  margin-right: 150px; 
+  margin-left: 50px;
+  padding: 20px; 
+  border: 2px solid #e98973; 
+  background-color: #e7d4c0 ; 
+  border-radius: 15px; 
+  max-width:600px;
+  min-height:400px;
+}
+
+.description {
+  flex: 2; 
+  max-width: 400px; 
+}
+
+button {
+  background-color: #436d8a; /* Button color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 15px; 
+}
+button:hover {
+  background-color: #e98973;
+}
+
+.team-section {
+  
+  padding: 40px;
+  background-color: #ffffff; /* Light gray for the team section */
+}
+
+.team-members {
+  padding-top: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 100px;
+}
+
+.team-member {
+  text-align: center;
+}
+
+.profile {
+  width: 100px;
+  height: 100px;
+  background-color: #ccc; /* Gray for profile pictures */
+  border-radius: 50%; /* Circular profile */
+  margin-bottom: 10px;
+}
+
+.technology {
+  background-color: #436d8a;
+  border-radius: 25px;
+  padding-top: 10px;
+  padding-bottom: 50px;
+  margin: 20px;
+  color: white;
+  margin-left: 70px;
+  margin-right: 70px;
+  margin-top: 50px;
+
+}
+
+.p2{
+  font-size: 25px;
+  max-width: 400px;
+
+}
+
+.technology-box {
+  background-color: #f5e3d6; 
+  padding: 20px; 
+  border-radius: 15px; 
+  margin: 20px 0; 
+}
+
+.technology-containers {
+  display: flex; 
+  margin-top: 10px;
+  justify-content: space-between;
+  padding: 30px;
+}
+
+.tech-container {
+  flex: 1; 
+  margin: 0 10px;
+  padding: 20px;
+  background-color: #ffffff; 
+  border-radius: 10px; 
+  text-align: center;
+  color:black;
+  font-weight: bolder;
+}
+
+.tech-image {
+  width: 100%; 
+  height: auto; 
+  border-radius: 10px; 
+  margin-top: 10px; 
+}
