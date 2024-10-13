@@ -2,9 +2,35 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./UploadPage.css";
 import Navbar from "../components/Navbar";
-import asl1 from "./asl1.jpeg";
+/*import asl1 from "./asl1.jpeg";
 import asl2 from "./asl2.jpeg";
-import asl3 from "./asl3.jpeg";
+import asl3 from "./asl3.jpeg"; */
+import a from "./alphabet/a.jpg";
+import b from "./b.jpg";
+import c from "./c.jpg";
+import d from "./d.jpg";
+import e from "./e.jpg";
+import f from "./f.jpg";
+import g from "./g.jpg";
+import h from "./h.jpg";
+import i from "./i.jpg";
+import j from "./j.jpg";
+import k from "./k.jpg";
+import l from "./l.jpg";
+import m from "./m.jpg";
+import n from "./n.jpg";
+import o from "./o.jpg";
+import p from "./p.jpg";
+import q from "./q.jpg";
+import r from "./r.jpg";
+import s from "./s.jpg";
+import t from "./t.jpg";
+import u from "./u.jpg";
+import v from "./v.jpg";
+import w from "./w.jpg";
+import x from "./x.jpg";
+import y from "./y.jpg";
+import z from "./z.jpg";
 
 function UploadPage() {
   const [file, setFile] = useState(null);
@@ -113,7 +139,9 @@ function UploadPage() {
             <div className="small-box">
               <p>{responseText}</p>
             </div>
+            <button onClick={startASLDisplay}>Upload & Display ASL</button>
           </div>
+          
         )}
       </div>
     </div>
