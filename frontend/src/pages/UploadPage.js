@@ -120,6 +120,7 @@ function UploadPage() {
   function startASLDisplay() {
     const wordArray = responseText.trim().split(/\s+/);
     const totalWords = responseText.split(" ").length;
+    console.log("Total Words:", totalWords);
     const calculatedWordsPerSecond = totalWords / videoDuration;
     setWordsPerSecond(calculatedWordsPerSecond);
 
@@ -210,7 +211,7 @@ function UploadPage() {
         </div> */}
 
         <div className="words-per-second">
-          <p>Words per second: {wordsPerSecond.toFixed(2)}</p>
+          {/* <p>Words per second: {wordsPerSecond.toFixed(2)}</p> */}
         </div>
       </div>
     </div>
