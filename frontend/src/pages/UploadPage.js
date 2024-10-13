@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import "./UploadPage.css";
 import Navbar from "../components/Navbar";
@@ -28,7 +28,7 @@ import aslW from "./alphabet/w.jpeg";
 import aslX from "./alphabet/x.jpeg";
 import aslY from "./alphabet/y.jpeg";
 import aslZ from "./alphabet/z.jpeg";
-import blankSpace from "./alphabet/space.jpg"; 
+import blankSpace from "./alphabet/space.jpg";
 
 const aslImages = {
   a: aslA,
@@ -57,7 +57,7 @@ const aslImages = {
   x: aslX,
   y: aslY,
   z: aslZ,
-  " ": blankSpace // Add handling for spaces
+  " ": blankSpace, // Add handling for spaces
 };
 
 function UploadPage() {
@@ -67,6 +67,9 @@ function UploadPage() {
   const [previewURL, setPreviewURL] = useState(null);
   const [inputText, setInputText] = useState(""); // State for the user input sentence
 
+  const [videoDuration, setVideoDuration] = useState(null);
+  const videoRef = useRef(null); // Ref to control the video element
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
@@ -74,6 +77,7 @@ function UploadPage() {
   };
 
   const handleUpload = async (event) => {
+    setResponseText(null); // Clear previous response
     event.preventDefault();
 
     if (!file) {
@@ -95,7 +99,10 @@ function UploadPage() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setResponseText(response.data.text); // Display the server response
+      setResponseText(response.data.text); // Display server response
+
+      // Set video URL for playback after upload completes
+      setPreviewURL(URL.createObjectURL(file));
     } catch (error) {
       console.error("Error uploading video:", error);
       alert("Failed to upload video.");
@@ -151,8 +158,27 @@ function UploadPage() {
         {responseText && (
           <div className="response-block">
             <h3>Response</h3>
-            <div className="small-box">
-              <p>{responseText}</p>
+
+            <div className="video-container">
+              {previewURL && (
+                <div>
+                  <video
+                    ref={videoRef}
+                    src={previewURL}
+                    controls
+                    onLoadedMetadata={() => {
+                      const duration = videoRef.current.duration;
+                      setVideoDuration(duration.toFixed(2)); // Set duration with 2 decimal points
+                    }}
+                  />
+                  {/* <p>
+                      Video Length:{" "}
+                      {videoDuration
+                        ? `${videoDuration} seconds`
+                        : "Loading..."}
+                    </p> */}
+                </div>
+              )}
             </div>
           </div>
         )}
