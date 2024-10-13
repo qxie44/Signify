@@ -1,74 +1,120 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './UploadPage.css';
-import Navbar from '../components/Navbar';
-import asl1 from './asl1.jpeg';
-import asl2 from './asl2.jpeg';
-import asl3 from './asl3.jpeg';
-
-
-
+import React, { useState } from "react";
+import axios from "axios";
+import "./UploadPage.css";
+import Navbar from "../components/Navbar";
+import asl1 from "./asl1.jpeg";
+import asl2 from "./asl2.jpeg";
+import asl3 from "./asl3.jpeg";
 
 function UploadPage() {
-  
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [responseText, setResponseText] = useState(null);
+  const [previewURL, setPreviewURL] = useState(null);
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    setPreviewURL(URL.createObjectURL(selectedFile)); // Generate preview URL
+  };
+
+  const handleUpload = async (event) => {
+    event.preventDefault();
+
+    if (!file) {
+      alert("Please select a file before uploading.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("video", file);
+
+    setUploading(true);
+    setResponseText(null); // Clear previous response
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/upload-video",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setResponseText(response.data.text); // Display the server response
+    } catch (error) {
+      console.error("Error uploading video:", error);
+      alert("Failed to upload video.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   function startASLDisplay() {
     const aslImages = [asl1, asl2, asl3];
     const totalDisplayTime = 2; // Total time in seconds to display the images
-
-    // Call the function to display the images
     displayImagesOverTime(aslImages, totalDisplayTime);
   }
+
   function displayImagesOverTime(imagesArray, totalTime) {
-    const container = document.getElementById('asl-container');
+    const container = document.getElementById("asl-container");
     const imageCount = imagesArray.length;
     const displayTime = totalTime / imageCount; // Time per image (in seconds)
 
     let currentIndex = 0;
 
     function showNextImage() {
-      if (currentIndex >= imageCount) {
-        return; // Stop when all images are shown
-      }
+      if (currentIndex >= imageCount) return; // Stop when all images are shown
 
-      // Clear the previous image
-      container.innerHTML = '';
-
-      // Create a new image element
-      const imgElement = document.createElement('img');
+      container.innerHTML = ""; // Clear previous image
+      const imgElement = document.createElement("img");
       imgElement.src = imagesArray[currentIndex];
       imgElement.alt = `ASL image ${currentIndex + 1}`;
-
-      // Append the image to the container
       container.appendChild(imgElement);
 
-      // Move to the next image after displayTime
       currentIndex++;
       setTimeout(showNextImage, displayTime * 1000); // Convert to ms
     }
 
     showNextImage(); // Start displaying the first image
-
   }
+
   return (
-    <div className='UploadPage'>
-      <Navbar /> {/* Add Navbar here */} 
-      <div className='header'>
-      </div>
+    <div className="UploadPage">
+      <Navbar />
+      <div className="header"></div>
       <div className="container">
-      <div className='uploadblock'>
-        <h3>Upload</h3>
-        <div className="small-box">upload file here</div>
-        <button> Upload </button>
-      </div>
-      <div className='previewblock'>
-        <h3>Preview</h3>
-        <div className='previewblock'>
-        <div className="small-box">preview file here</div>
-        <button onClick={startASLDisplay}>Upload & Display ASL</button> 
+        <div className="uploadblock">
+          <h3>Upload</h3>
+          <div className="small-box">
+            <input type="file" accept="video/mp4" onChange={handleFileChange} />
+          </div>
+          <button onClick={handleUpload} disabled={uploading}>
+            {uploading ? <div className="spinner"></div> : "Upload"}
+          </button>
         </div>
-      </div>
-      
-      <div id="asl-container" className="asl-container"></div>
+
+        {/* <div className="previewblock">
+          <h3>Preview</h3>
+          <div className="small-box">
+            {previewURL ? (
+              <video src={previewURL} controls width="100%" />
+            ) : (
+              "Preview file here"
+            )}
+          </div>
+          <button onClick={startASLDisplay}>Upload & Display ASL</button>
+        </div> */}
+
+        <div id="asl-container" className="asl-container"></div>
+
+        {responseText && (
+          <div className="response-block">
+            <h3>Response</h3>
+            <div className="small-box">
+              <p>{responseText}</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
