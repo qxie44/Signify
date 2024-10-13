@@ -74,6 +74,17 @@ function UploadPage() {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
     setPreviewURL(URL.createObjectURL(selectedFile));
+
+    // Create a temporary video element to get the duration
+    const tempVideo = document.createElement("video");
+    tempVideo.src = URL.createObjectURL(selectedFile);
+
+    // Listen for the metadata load to get video duration
+    tempVideo.onloadedmetadata = () => {
+      const duration = tempVideo.duration;
+      console.log("Video Duration:", duration);
+      setVideoDuration(duration.toFixed(2)); // Store the duration in state
+    };
   };
 
   const handleUpload = async (event) => {
@@ -166,9 +177,7 @@ function UploadPage() {
           </div>
         )}
 
-        <div id="asl-container" className="asl-container"></div>
-
-        {responseText && (
+        {responseText && videoDuration && (
           <div className="response-block">
             <h3>Response</h3>
             <div className="video-container">
@@ -177,17 +186,18 @@ function UploadPage() {
                   ref={videoRef}
                   src={previewURL}
                   controls
-                  onLoadedMetadata={() => {
-                    const duration = videoRef.current.duration;
-                    console.log("Video Duration: ", videoDuration);
-                    startASLDisplay();
-                    setVideoDuration(duration.toFixed(2));
+                  onPlay={() => {
+                    if (responseText) {
+                      startASLDisplay();
+                    }
                   }}
                 />
               )}
             </div>
           </div>
         )}
+
+        <div id="asl-container" className="asl-container"></div>
 
         {/* <div className="sentence-input">
           <h3>Enter Sentence:</h3>
