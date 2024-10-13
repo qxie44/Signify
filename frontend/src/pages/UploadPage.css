@@ -68,3 +68,8 @@ button:hover {
   max-height: 100%;
   border-radius: 10px;
 }
+
+.space-image {
+  width: 20px; /* Set a smaller width for space */
+  height: auto; /* Keep the height proportional */
+}

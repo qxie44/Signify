@@ -2,41 +2,70 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./UploadPage.css";
 import Navbar from "../components/Navbar";
-/*import asl1 from "./asl1.jpeg";
-import asl2 from "./asl2.jpeg";
-import asl3 from "./asl3.jpeg"; */
-import a from "./alphabet/a.jpg";
-import b from "./b.jpg";
-import c from "./c.jpg";
-import d from "./d.jpg";
-import e from "./e.jpg";
-import f from "./f.jpg";
-import g from "./g.jpg";
-import h from "./h.jpg";
-import i from "./i.jpg";
-import j from "./j.jpg";
-import k from "./k.jpg";
-import l from "./l.jpg";
-import m from "./m.jpg";
-import n from "./n.jpg";
-import o from "./o.jpg";
-import p from "./p.jpg";
-import q from "./q.jpg";
-import r from "./r.jpg";
-import s from "./s.jpg";
-import t from "./t.jpg";
-import u from "./u.jpg";
-import v from "./v.jpg";
-import w from "./w.jpg";
-import x from "./x.jpg";
-import y from "./y.jpg";
-import z from "./z.jpg";
+import aslA from "./alphabet/a.jpeg";
+import aslB from "./alphabet/b.jpeg";
+import aslC from "./alphabet/c.jpeg";
+import aslD from "./alphabet/d.jpeg";
+import aslE from "./alphabet/e.jpeg";
+import aslF from "./alphabet/f.jpeg";
+import aslG from "./alphabet/g.jpeg";
+import aslH from "./alphabet/h.jpeg";
+import aslI from "./alphabet/i.jpeg";
+import aslJ from "./alphabet/j.jpeg";
+import aslK from "./alphabet/k.jpeg";
+import aslL from "./alphabet/L.jpeg";
+import aslM from "./alphabet/m.jpeg";
+import aslN from "./alphabet/n.jpeg";
+import aslO from "./alphabet/o.jpeg";
+import aslP from "./alphabet/p.jpeg";
+import aslQ from "./alphabet/q.jpeg";
+import aslR from "./alphabet/r.jpeg";
+import aslS from "./alphabet/s.jpeg";
+import aslT from "./alphabet/t.jpeg";
+import aslU from "./alphabet/u.jpeg";
+import aslV from "./alphabet/v.jpeg";
+import aslW from "./alphabet/w.jpeg";
+import aslX from "./alphabet/x.jpeg";
+import aslY from "./alphabet/y.jpeg";
+import aslZ from "./alphabet/z.jpeg";
+import blankSpace from "./alphabet/space.jpg"; 
+
+const aslImages = {
+  a: aslA,
+  b: aslB,
+  c: aslC,
+  d: aslD,
+  e: aslE,
+  f: aslF,
+  g: aslG,
+  h: aslH,
+  i: aslI,
+  j: aslJ,
+  k: aslK,
+  l: aslL,
+  m: aslM,
+  n: aslN,
+  o: aslO,
+  p: aslP,
+  q: aslQ,
+  r: aslR,
+  s: aslS,
+  t: aslT,
+  u: aslU,
+  v: aslV,
+  w: aslW,
+  x: aslX,
+  y: aslY,
+  z: aslZ,
+  " ": blankSpace // Add handling for spaces
+};
 
 function UploadPage() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [responseText, setResponseText] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
+  const [inputText, setInputText] = useState(""); // State for the user input sentence
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -76,32 +105,30 @@ function UploadPage() {
   };
 
   function startASLDisplay() {
-    const aslImages = [asl1, asl2, asl3];
-    const totalDisplayTime = 2; // Total time in seconds to display the images
-    displayImagesOverTime(aslImages, totalDisplayTime);
+    const aslImagesForSentence = inputText
+      .toLowerCase()
+      .split("")
+      .map((letter) => aslImages[letter] || blankSpace);
+
+    displayImagesSideBySide(aslImagesForSentence);
   }
 
-  function displayImagesOverTime(imagesArray, totalTime) {
+  function displayImagesSideBySide(imagesArray) {
     const container = document.getElementById("asl-container");
-    const imageCount = imagesArray.length;
-    const displayTime = totalTime / imageCount; // Time per image (in seconds)
-
-    let currentIndex = 0;
-
-    function showNextImage() {
-      if (currentIndex >= imageCount) return; // Stop when all images are shown
-
-      container.innerHTML = ""; // Clear previous image
-      const imgElement = document.createElement("img");
-      imgElement.src = imagesArray[currentIndex];
-      imgElement.alt = `ASL image ${currentIndex + 1}`;
-      container.appendChild(imgElement);
-
-      currentIndex++;
-      setTimeout(showNextImage, displayTime * 1000); // Convert to ms
+    if (!container) {
+      console.error("Container element with ID 'asl-container' not found.");
+      return;
     }
+    container.innerHTML = ""; // Clear previous images
 
-    showNextImage(); // Start displaying the first image
+    imagesArray.forEach((imageSrc) => {
+      const imgElement = document.createElement("img");
+      imgElement.src = imageSrc;
+      if (imageSrc === blankSpace) {
+        imgElement.classList.add("space-image");
+      }
+      container.appendChild(imgElement);
+    });
   }
 
   return (
@@ -119,18 +146,6 @@ function UploadPage() {
           </button>
         </div>
 
-        {/* <div className="previewblock">
-          <h3>Preview</h3>
-          <div className="small-box">
-            {previewURL ? (
-              <video src={previewURL} controls width="100%" />
-            ) : (
-              "Preview file here"
-            )}
-          </div>
-          <button onClick={startASLDisplay}>Upload & Display ASL</button>
-        </div> */}
-
         <div id="asl-container" className="asl-container"></div>
 
         {responseText && (
@@ -139,10 +154,20 @@ function UploadPage() {
             <div className="small-box">
               <p>{responseText}</p>
             </div>
-            <button onClick={startASLDisplay}>Upload & Display ASL</button>
           </div>
-          
         )}
+
+        {/* Input for sentence */}
+        <div className="sentence-input">
+          <h3>Enter Sentence:</h3>
+          <input
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            placeholder="Type your sentence here"
+          />
+          <button onClick={startASLDisplay}>Print</button>
+        </div>
       </div>
     </div>
   );
