@@ -57,30 +57,27 @@ const aslImages = {
   x: aslX,
   y: aslY,
   z: aslZ,
-  " ": blankSpace, // Add handling for spaces
+  " ": blankSpace,
 };
 
 function UploadPage() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [responseText, setResponseText] = useState(null);
+
   const [previewURL, setPreviewURL] = useState(null);
-  const [inputText, setInputText] = useState(""); // State for the user input sentence
-  const [wordsPerSecond, setWordsPerSecond] = useState(0); // State for wordsPerSecond
-
-  const videoTime = 5; // Assuming the video time is 60 seconds
-
+  const [responseText, setResponseText] = useState("");
+  const [wordsPerSecond, setWordsPerSecond] = useState(0);
   const [videoDuration, setVideoDuration] = useState(null);
-  const videoRef = useRef(null); // Ref to control the video element
+  const videoRef = useRef(null);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
-    setPreviewURL(URL.createObjectURL(selectedFile)); // Generate preview URL
+    setPreviewURL(URL.createObjectURL(selectedFile));
   };
 
   const handleUpload = async (event) => {
-    setResponseText(null); // Clear previous response
+    setResponseText(null);
     event.preventDefault();
 
     if (!file) {
@@ -92,19 +89,14 @@ function UploadPage() {
     formData.append("video", file);
 
     setUploading(true);
-    setResponseText(null); // Clear previous response
 
     try {
       const response = await axios.post(
         "http://localhost:5000/upload-video",
         formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      setResponseText(response.data.text); // Display server response
-
-      // Set video URL for playback after upload completes
+      setResponseText(response.data.text);
       setPreviewURL(URL.createObjectURL(file));
     } catch (error) {
       console.error("Error uploading video:", error);
@@ -114,26 +106,21 @@ function UploadPage() {
     }
   };
 
-  // Function to start displaying ASL for the sentence based on wordsPerSecond
   function startASLDisplay() {
-    const wordArray = inputText.trim().split(/\s+/); // Split sentence into words
-    const totalWords = wordArray.length;
+    const wordArray = responseText.trim().split(/\s+/);
+    const totalWords = responseText.split(" ").length;
+    const calculatedWordsPerSecond = totalWords / videoDuration;
+    setWordsPerSecond(calculatedWordsPerSecond);
 
-    // Calculate wordsPerSecond based on videoTime
-    const calculatedWordsPerSecond = totalWords / videoTime;
-    setWordsPerSecond(calculatedWordsPerSecond); // Update state with calculated wordsPerSecond
-
-    // Generate images for each word
     wordArray.forEach((word, index) => {
       const aslImagesForWord = word
         .toLowerCase()
         .split("")
-        .map((letter) => aslImages[letter] || blankSpace); // Convert each letter to ASL image
+        .map((letter) => aslImages[letter] || blankSpace);
 
-      // Display images over time, according to wordsPerSecond
       setTimeout(() => {
         displayImagesSideBySide(aslImagesForWord);
-      }, index * (videoTime / totalWords) * 1000); // Time for each word
+      }, index * (videoDuration / totalWords) * 1000);
     });
   }
 
@@ -143,7 +130,7 @@ function UploadPage() {
       console.error("Container element with ID 'asl-container' not found.");
       return;
     }
-    container.innerHTML = ""; // Clear previous images
+    container.innerHTML = "";
 
     imagesArray.forEach((imageSrc) => {
       const imgElement = document.createElement("img");
@@ -160,59 +147,58 @@ function UploadPage() {
       <Navbar />
       <div className="header"></div>
       <div className="container">
-        <div className="uploadblock">
-          <h3>Upload</h3>
-          <div className="small-box">
-            <input type="file" accept="video/mp4" onChange={handleFileChange} />
+        {uploading ? (
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <h1>Uploading... Please wait.</h1>
           </div>
-          <button onClick={handleUpload} disabled={uploading}>
-            {uploading ? <div className="spinner"></div> : "Upload"}
-          </button>
-        </div>
+        ) : (
+          <div className="uploadblock">
+            <h3>Upload</h3>
+            <div className="small-box">
+              <input
+                type="file"
+                accept="video/mp4"
+                onChange={handleFileChange}
+              />
+            </div>
+            <button onClick={handleUpload}>Upload</button>
+          </div>
+        )}
 
         <div id="asl-container" className="asl-container"></div>
 
         {responseText && (
           <div className="response-block">
             <h3>Response</h3>
-
             <div className="video-container">
               {previewURL && (
-                <div>
-                  <video
-                    ref={videoRef}
-                    src={previewURL}
-                    controls
-                    onLoadedMetadata={() => {
-                      const duration = videoRef.current.duration;
-                      setVideoDuration(duration.toFixed(2)); // Set duration with 2 decimal points
-                    }}
-                  />
-                  {/* <p>
-                      Video Length:{" "}
-                      {videoDuration
-                        ? `${videoDuration} seconds`
-                        : "Loading..."}
-                    </p> */}
-                </div>
+                <video
+                  ref={videoRef}
+                  src={previewURL}
+                  controls
+                  onLoadedMetadata={() => {
+                    const duration = videoRef.current.duration;
+                    console.log("Video Duration: ", videoDuration);
+                    startASLDisplay();
+                    setVideoDuration(duration.toFixed(2));
+                  }}
+                />
               )}
             </div>
           </div>
         )}
 
-        {/* Input for sentence */}
-        <div className="sentence-input">
+        {/* <div className="sentence-input">
           <h3>Enter Sentence:</h3>
           <input
             type="text"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            value={responseText}
+            onChange={(e) => setResponseText(e.target.value)}
             placeholder="Type your sentence here"
           />
-          <button onClick={startASLDisplay}>Print</button>
-        </div>
+        </div> */}
 
-        {/* Display wordsPerSecond */}
         <div className="words-per-second">
           <p>Words per second: {wordsPerSecond.toFixed(2)}</p>
         </div>

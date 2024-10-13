@@ -4,64 +4,62 @@
   text-align: left;
   font-size: 20px;
 }
-.UploadPage{
+.UploadPage {
   background-color: #f5e3d6;
 }
 
 .container {
   background-color: #ffffff;
 
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
   cursor: pointer;
-  border-radius: 15px; 
+  border-radius: 15px;
 }
- .previewblock {
-  flex: 1; 
-  margin: 10px; 
-  padding: 20px; 
+.previewblock {
+  flex: 1;
+  margin: 10px;
+  padding: 20px;
   min-width: 300px; /* Minimum width */
-  min-height: 200px; 
+  min-height: 200px;
 }
 .uploadblock {
-  margin: 10px; 
-  padding: 20px; 
-  min-height: 50px; 
+  margin: 10px;
+  padding: 20px;
+  min-height: 50px;
 }
 
 .small-box {
-  width: 80%; 
-  height: 50px; 
-  margin: 10px auto; 
+  width: 80%;
+  height: 50px;
+  margin: 10px auto;
   background-color: #f5e3d6;
-  border-radius: 8px; 
+  border-radius: 8px;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
-  min-width: 4%; 
-  min-height: 300px; 
+  min-width: 4%;
+  min-height: 300px;
 }
 
 button {
-  background-color: #436d8a; 
+  background-color: #436d8a;
   color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  border-radius: 15px; 
+  border-radius: 15px;
   font-weight: bold;
   margin-top: 10px;
 }
 
 .previewblock button {
-  margin-left: 10px; 
+  margin-left: 10px;
 }
 
 button:hover {
   background-color: #e98973;
 }
-
-
 
 .asl-container img {
   max-width: 100%;
@@ -72,4 +70,30 @@ button:hover {
 .space-image {
   width: 20px; /* Set a smaller width for space */
   height: auto; /* Keep the height proportional */
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
