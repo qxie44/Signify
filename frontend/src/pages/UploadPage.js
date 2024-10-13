@@ -66,6 +66,9 @@ function UploadPage() {
   const [responseText, setResponseText] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
   const [inputText, setInputText] = useState(""); // State for the user input sentence
+  const [wordsPerSecond, setWordsPerSecond] = useState(0); // State for wordsPerSecond
+
+  const videoTime = 5; // Assuming the video time is 60 seconds
 
   const [videoDuration, setVideoDuration] = useState(null);
   const videoRef = useRef(null); // Ref to control the video element
@@ -111,13 +114,27 @@ function UploadPage() {
     }
   };
 
+  // Function to start displaying ASL for the sentence based on wordsPerSecond
   function startASLDisplay() {
-    const aslImagesForSentence = inputText
-      .toLowerCase()
-      .split("")
-      .map((letter) => aslImages[letter] || blankSpace);
+    const wordArray = inputText.trim().split(/\s+/); // Split sentence into words
+    const totalWords = wordArray.length;
 
-    displayImagesSideBySide(aslImagesForSentence);
+    // Calculate wordsPerSecond based on videoTime
+    const calculatedWordsPerSecond = totalWords / videoTime;
+    setWordsPerSecond(calculatedWordsPerSecond); // Update state with calculated wordsPerSecond
+
+    // Generate images for each word
+    wordArray.forEach((word, index) => {
+      const aslImagesForWord = word
+        .toLowerCase()
+        .split("")
+        .map((letter) => aslImages[letter] || blankSpace); // Convert each letter to ASL image
+
+      // Display images over time, according to wordsPerSecond
+      setTimeout(() => {
+        displayImagesSideBySide(aslImagesForWord);
+      }, index * (videoTime / totalWords) * 1000); // Time for each word
+    });
   }
 
   function displayImagesSideBySide(imagesArray) {
@@ -193,6 +210,11 @@ function UploadPage() {
             placeholder="Type your sentence here"
           />
           <button onClick={startASLDisplay}>Print</button>
+        </div>
+
+        {/* Display wordsPerSecond */}
+        <div className="words-per-second">
+          <p>Words per second: {wordsPerSecond.toFixed(2)}</p>
         </div>
       </div>
     </div>
