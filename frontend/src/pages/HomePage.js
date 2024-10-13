@@ -58,7 +58,7 @@ function HomePage() {
           </div>
         </div>
       </section>
-      <section className="team-section">
+      {/* <section className="team-section">
         <h2>Meet the team</h2>
         <div className="team-members">
           <div className="team-member">
@@ -78,7 +78,7 @@ function HomePage() {
             <p>Rayyan</p>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
